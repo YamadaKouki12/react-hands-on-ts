@@ -1,6 +1,8 @@
 import { useState } from "react";
 import colorData from "./color-data.json";
 import { ColorList } from "./ColorList";
+import { AddColorForm } from "./AddColorForm";
+import { v4 } from "uuid";
 
 const App = () => {
   const [colors, setColors] = useState(colorData);
@@ -16,8 +18,14 @@ const App = () => {
     });
     setColors(newColors);
   };
+  const onNewColor = (title: string, color: string) => {
+    const newColors = [...colors, { id: v4(), rating: 0, title, color }];
+    setColors(newColors);
+  };
+
   return (
     <>
+      <AddColorForm {...{ onNewColor }} />
       <ColorList {...{ colors, onRemove, onRate }} />
     </>
   );
