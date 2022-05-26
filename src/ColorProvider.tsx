@@ -14,11 +14,16 @@ type ContextType = {
   removeColor: (id: string) => void;
 };
 
-// TypescriptでのContextがよくわからない、、、
-const ColorContext = createContext({} as ContextType);
-// const ColorContext = createContext<ContextType | undefined>(undefined);
+const ColorContext = createContext<ContextType | undefined>(undefined);
 
-export const useColors = () => useContext(ColorContext);
+export const useColors = () => {
+  const context = useContext(ColorContext);
+  if (context === undefined) {
+    throw new Error("error");
+  }
+  return context;
+};
+
 export const ColorProvider: React.FC<Props> = ({ children }) => {
   const [colors, setColors] = useState(colorData);
   const addColor = (title: string, color: string) => {
